@@ -1,28 +1,25 @@
 import axios from 'axios';
 import * as fs from 'fs';
 
-import { getAjaxUrl } from '../../helpers/get_ajax_url/get_ajax_url';
 import { ResponseData } from '../../typings';
 import { isDev } from '../is_dev/is_dev';
 
-export const getReponseData: () => Promise<ResponseData> = async () => {
+export const getReponseData: (url: string) => Promise<ResponseData> = async (url) => {
   /**
    * Чтобы не нагружать каждый раз сеть - при разработке используем данные из файла
    */
   const responseData = isDev ?
     getReponseFromTempFile() :
-    getResponseFromAjax();
+    getResponseFromAjax(url);
 
   return responseData;
 };
 
-const getResponseFromAjax = async () => {
-  const ajaxUrl = getAjaxUrl();
-
+const getResponseFromAjax = async (url: string) => {
   let response;
 
   try {
-    response = await axios.get(ajaxUrl, {
+    response = await axios.get(url, {
       headers: {
         'x-requested-with': 'XMLHttpRequest'
       }

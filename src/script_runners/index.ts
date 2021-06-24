@@ -1,5 +1,5 @@
-import checkTravelData from '../';
+import { checkTravelDataSeparately } from '../';
 
 (async () => {
-    await checkTravelData();
+  await checkTravelDataSeparately();
 })();
