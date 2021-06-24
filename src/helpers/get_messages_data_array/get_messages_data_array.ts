@@ -27,17 +27,21 @@ export const getMessageDataArray = (requiredData: Partial<ResponseData>) => {
 
     const linkUrl = process.env.TRAVEL_SEARCHER_HOST + link;
 
+    const [day, month] = date.split('.');
+
     const countryCodeHashtag = `#${countryCode.toLocaleUpperCase()}`;
     const nightsHashtag = `#n${nights}`;
     const priceHashtag = getPriceHashtag(price);
-    const dateHashtag = `#d${date.replace(/\./g, '\\_')}`;
+    // const dateHashtag = `#d${date.replace(/\./g, '\\_')}`;
     const khotHashtag = getKhotHashtag(khot);
+    const monthHashtag = `#m${month}`;
+    const dayHashtag = `#d${day}`;
 
-    const hashtags = `${countryCodeHashtag} ${nightsHashtag} ${priceHashtag} ${dateHashtag} ${khotHashtag}`;
+    const hashtags = `${countryCodeHashtag} ${nightsHashtag} ${priceHashtag} ${khotHashtag} ${dayHashtag} ${monthHashtag}`;
 
     let messageString = '';
 
-    messageString += `[${country}${flagString}](${linkUrl})${NEW_LINE}`;
+    messageString += `🆕 [${country}${flagString}](${linkUrl})${NEW_LINE}`;
     messageString += `Выгодность *${khot}%.*${NEW_LINE}`;
     messageString += `Стоимость *${price}*${NEW_LINE}`;
     messageString += `Даты *${date} - ${dateTo}* → *${nights}* ночей.${NEW_LINE}${NEW_LINE}`;

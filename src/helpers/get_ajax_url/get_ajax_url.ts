@@ -1,3 +1,5 @@
+const { DateTime } = require('luxon');
+
 const HOST = process.env.DEFAULT_HOST;
 
 const DEFAULT_ACTION = 'getTours';
@@ -6,14 +8,14 @@ const DEFAULT_CITIES = 'Moscow';
  * GR - Греция, CY - Кипр, CU - Куба, MV - Мальдивы, AE - ОАЭ, SC - Сейшелы
  */
 const DEFAULT_COUNTRIES = ['GR', 'CY', 'CU', 'MV', 'AE', 'SC'];
-const DEFAULT_KHOT = 20;
+export const DEFAULT_KHOT = 40;
 const DEFAULT_PRICE = process.env.DEFAULT_PRICE;
 const DEFAULT_NIGHTS_FROM = process.env.DEFAULT_NIGHTS_FROM;
 const DEFAULT_NIGHTS_TO = process.env.DEFAULT_NIGHTS_TO;
 const DEFAULT_NO_VISA = false;
 const HOTTEST_DEFAULT = false;
-const DATE_FROM_DEFAULT = process.env.DATE_FROM_DEFAULT;
-const DATE_TO_DEFAULT = process.env.DATE_TO_DEFAULT;
+// const DATE_FROM_DEFAULT = process.env.DATE_FROM_DEFAULT;
+// const DATE_TO_DEFAULT = process.env.DATE_TO_DEFAULT;
 const SORT_DEFAULT = 'khot';
 const SORT_DIR_DEFAULT = 0;
 
@@ -90,6 +92,22 @@ export type AjaxOptions = {
   sortDir?: 0,
 }
 
+const getDateFrom = () => {
+  const now = DateTime.now().setZone('Europe/Moscow');
+
+  const tomorrow = now.plus({ days: 3 }).toFormat('dd.MM.yyyy');
+
+  return tomorrow;
+}
+
+const getDateTo = () => {
+  const now = DateTime.now().setZone('Europe/Moscow');
+
+  const tomorrowPlusMonth = now.plus({ days: 3, month: 3 }).toFormat('dd.MM.yyyy');
+
+  return tomorrowPlusMonth;
+};
+
 export const getAjaxUrl = (options?: AjaxOptions) => {
   const {
     action = DEFAULT_ACTION,
@@ -101,8 +119,8 @@ export const getAjaxUrl = (options?: AjaxOptions) => {
     nightsTo = DEFAULT_NIGHTS_TO,
     novisa = DEFAULT_NO_VISA,
     hottest = HOTTEST_DEFAULT,
-    dateFrom = DATE_FROM_DEFAULT,
-    dateTo = DATE_TO_DEFAULT,
+    dateFrom = getDateFrom(),
+    dateTo = getDateTo(),
     sort = SORT_DEFAULT,
     sortDir = SORT_DIR_DEFAULT,
   } = options || {};
@@ -182,20 +200,20 @@ export const getAjaxUrl = (options?: AjaxOptions) => {
  */
 export const ajaxUrlParams: Partial<AjaxOptions>[] = [{
   countries: ['GR'],
-  kHot: 30,
+  kHot: DEFAULT_KHOT,
 }, {
   countries: ['CY'],
-  kHot: 30,
+  kHot: DEFAULT_KHOT,
 }, {
   countries: ['CU'],
-  kHot: 30,
+  kHot: DEFAULT_KHOT,
 }, {
   countries: ['MV'],
-  kHot: 30,
+  kHot: DEFAULT_KHOT,
 }, {
   countries: ['AE'],
-  kHot: 30,
+  kHot: DEFAULT_KHOT,
 }, {
   countries: ['SC'],
   kHot: 20,
-}]
+}];

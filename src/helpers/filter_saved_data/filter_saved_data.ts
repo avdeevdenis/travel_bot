@@ -65,7 +65,7 @@ export const filterSavedData = async (requiredData: ResponseData) => {
     const saved = DateTime.now().setZone('Europe/Moscow').toString();
 
     fileContentJSON[countryCode].push({
-      khot, price, nights, date, link, saved
+      khot, price, nights, date, link: process.env.TRAVEL_SEARCHER_HOST + link, saved
     });
 
     return true;
