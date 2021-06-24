@@ -182,19 +182,19 @@ export const getAjaxUrl = (options?: AjaxOptions) => {
  */
 export const ajaxUrlParams: Partial<AjaxOptions>[] = [{
   countries: ['GR'],
-  kHot: 40,
+  kHot: 30,
 }, {
   countries: ['CY'],
-  kHot: 40,
+  kHot: 30,
 }, {
   countries: ['CU'],
-  kHot: 40,
+  kHot: 30,
 }, {
   countries: ['MV'],
-  kHot: 40,
+  kHot: 30,
 }, {
   countries: ['AE'],
-  kHot: 50,
+  kHot: 30,
 }, {
   countries: ['SC'],
   kHot: 20,

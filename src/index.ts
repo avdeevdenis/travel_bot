@@ -9,6 +9,7 @@ import { filterSavedData } from './helpers/filter_saved_data/filter_saved_data';
 import { getMessageDataArray } from './helpers/get_messages_data_array/get_messages_data_array';
 import { getReponseData } from './helpers/get_response_data/get_respone_data';
 import { sendTelegramMessage } from './helpers/send_telegram_message/send_telegram_message';
+import { debug_console } from './helpers/debug_console/debug_console';
 
 export const checkTravelData = async (url = getAjaxUrl()) => {
   const responseData = await getReponseData(url);
@@ -33,6 +34,8 @@ export const checkTravelDataSeparately = async () => {
 
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
+    
+    debug_console('Start check travel [' + url + ']');
 
     await checkTravelData(url);
 
