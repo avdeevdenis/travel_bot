@@ -23,7 +23,7 @@ export const getMessageDataArray = (requiredData: Partial<ResponseData>) => {
     const flagString = flag ? ' ' + flag : '';
     const dateTo = getDateTo(date, nights);
     // const updatedTextI18N = getUpdatedTextI18N(updated);
-    const updatedDateTime = DateTime.now().setZone('Europe/Moscow').minus({ minutes: updated }).toFormat('hh:mm');
+    const updatedDateTime = DateTime.now().setZone('Europe/Moscow').minus({ minutes: updated }).toFormat('HH:mm');
 
     const linkUrl = process.env.TRAVEL_SEARCHER_HOST + link;
 
