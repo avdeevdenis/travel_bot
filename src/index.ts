@@ -13,9 +13,9 @@ export default async () => {
   if (!responseData) return;
 
   const requiredData = filterData(responseData);
+  if (!requiredData) return;
 
   const messageDataArray = getMessageDataArray(requiredData);
-  if (!messageDataArray || !messageDataArray.length) return;
 
   await sendTelegramMessage(messageDataArray);
 };

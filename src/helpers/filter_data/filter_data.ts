@@ -4,6 +4,8 @@ import { ResponseData } from '../../typings';
  * Берем из ответа поля, которые явно используем
  */
 export const filterData = (responseData: ResponseData) => {
+  if (!responseData.rows || !responseData.rows.length) return;
+
   const responseDataRows = responseData.rows.map((responseRow) => {
     const {
       city,
