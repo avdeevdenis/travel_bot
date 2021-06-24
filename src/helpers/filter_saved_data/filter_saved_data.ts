@@ -64,19 +64,22 @@ export const filterSavedData = async (requiredData: ResponseData) => {
 
     const saved = DateTime.now().setZone('Europe/Moscow').toString();
 
-    fileContentJSON[countryCode] = fileContentJSON[countryCode].concat({
+    fileContentJSON[countryCode].push({
       khot, price, nights, date, link, saved
     });
 
     return true;
   });
 
+
   /**
    * Записываем новые данные в файл, предварительно сортируя по 'khot'
    */
-  const fileContentJSONSorted = Object.keys(fileContentJSON).map(countryCode => {
-    return fileContentJSON[countryCode].sort((offer1, offer2) => offer2.khot - offer1.khot);
-  });
+  const fileContentJSONSorted = Object.keys(fileContentJSON).reduce((result, countryCode) => {
+    result[countryCode] = [...fileContentJSON[countryCode]].sort((offer1, offer2) => offer2.khot - offer1.khot);
+
+    return result;
+  }, {});
 
   await fs.writeFileSync(SAVED_ITEMS_FILE_PATH, JSON.stringify(fileContentJSONSorted), { encoding: 'utf8' });
 
