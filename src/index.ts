@@ -4,6 +4,7 @@ require('dotenv').config();
 process.env.NTBA_FIX_319 = '1';
 
 import { filterData } from './helpers/filter_data/filter_data';
+import { filterSavedData } from './helpers/filter_saved_data/filter_saved_data';
 import { getMessageDataArray } from './helpers/get_messages_data_array/get_messages_data_array';
 import { getReponseData } from './helpers/get_response_data/get_respone_data';
 import { sendTelegramMessage } from './helpers/send_telegram_message/send_telegram_message';
@@ -14,6 +15,9 @@ export default async () => {
 
   const requiredData = filterData(responseData);
   if (!requiredData) return;
+
+  const filteredData = await filterSavedData(requiredData);
+  if (!filteredData) return;
 
   const messageDataArray = getMessageDataArray(requiredData);
 

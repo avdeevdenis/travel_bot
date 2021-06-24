@@ -1,7 +1,7 @@
 import { ResponseData } from '../../typings';
 
 /**
- * Берем из ответа поля, которые явно используем
+ * Берем из ответа поля, которые явно используем + проверяем что данные вообще есть в ответе
  */
 export const filterData = (responseData: ResponseData) => {
   if (!responseData.rows || !responseData.rows.length) return;
