@@ -7,6 +7,10 @@ const { DateTime } = require('luxon');
 
 export const SAVED_ITEMS_FILE_PATH = './src/data/saved_items.json';
 
+const getLink = (linkPath) => {
+  return process.env.TRAVEL_SEARCHER_HOST + linkPath;
+};
+
 /**
  * Фильтруем полученные результаты, оставляем только те, которые видим первоначально и не отправляли ранее
  */
@@ -33,8 +37,12 @@ export const filterSavedData = async (requiredData: ResponseData) => {
     }
   }
 
-  const newDataRows = [...requiredData.rows].filter(row => {
-    const { countryCode, nights, price, date, link, khot } = row;
+  let code = '';
+
+  const newDataRows: Partial<ResponseRow>[] = [...requiredData.rows].filter(row => {
+    const { countryCode } = row;
+
+    code = countryCode;
 
     if (!fileContentJSON[countryCode]) {
       fileContentJSON[countryCode] = [];
@@ -53,37 +61,53 @@ export const filterSavedData = async (requiredData: ResponseData) => {
       const isSameDate = offer1.date === offer2.date;
       if (!isSameDate) return false;
 
-      const isSameLink = offer1.link === offer2.link;
+      const isSameLink = offer1.link === getLink(offer2.link);
       if (!isSameLink) return false;
 
       return true;
     };
 
-    const hasTheSameData = fileContentJSON[countryCode].filter(offerFromFile => areTheSameOffsers(offerFromFile, row)).length > 0;
-    if (hasTheSameData) return false;
-
-    const saved = DateTime.now().setZone('Europe/Moscow').toString();
-
-    fileContentJSON[countryCode].push({
-      khot, price, nights, date, link: process.env.TRAVEL_SEARCHER_HOST + link, saved
-    });
+    const hasTheSameDataInFile = fileContentJSON[countryCode].find(offerFromFile => areTheSameOffsers(offerFromFile, row));
+    if (hasTheSameDataInFile) return false;
 
     return true;
   });
 
+  if (newDataRows.length) {
+    const savedData = newDataRows.map(({ link, date, khot, nights, price }) => {
+      const saved = DateTime.now().setZone('Europe/Moscow').toString();
+  
+      return {
+        khot,
+        nights,
+        price,
+        date,
+        link: getLink(link),
+        saved,
+      };
+    });
 
-  /**
-   * Записываем новые данные в файл, предварительно сортируя по 'khot'
-   */
-  const fileContentJSONSorted = Object.keys(fileContentJSON).reduce((result, countryCode) => {
-    result[countryCode] = [...fileContentJSON[countryCode]].sort((offer1, offer2) => offer2.khot - offer1.khot);
+    fileContentJSON[code].push(...savedData);
 
-    return result;
-  }, {});
+    /**
+     * Записываем новые данные в файл, предварительно сортируя по 'khot'
+     */
+    fileContentJSON[code].sort((offer1, offer2) => offer2.khot - offer1.khot);
 
-  await fs.writeFileSync(SAVED_ITEMS_FILE_PATH, JSON.stringify(fileContentJSONSorted), { encoding: 'utf8' });
+    // console.log('🌐 get uniq object', uniqObject(fileContentJSON[code]));
 
-  if (!newDataRows.length) return;
+    await fs.writeFileSync(SAVED_ITEMS_FILE_PATH, JSON.stringify(fileContentJSON), { encoding: 'utf8' });
+  }
 
   return newDataRows;
 };
+
+// export const uniqObject = (rows: ResponseRow[]) => {
+//   return rows.reduce((result, item) => {
+//     const itemPath = item.link + item.price + item.date + item.nights;
+ 
+//     result[itemPath] = result[itemPath] ? result[itemPath] + 1 : 1;
+
+//     return result;
+//   }, {});
+// };

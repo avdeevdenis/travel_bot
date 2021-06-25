@@ -10,6 +10,7 @@ import { getMessageDataArray } from './helpers/get_messages_data_array/get_messa
 import { getReponseData } from './helpers/get_response_data/get_respone_data';
 import { sendTelegramMessage } from './helpers/send_telegram_message/send_telegram_message';
 import { debug_console } from './helpers/debug_console/debug_console';
+import { sleep } from './helpers/sleep/sleep';
 
 export const checkTravelData = async (url = getAjaxUrl()) => {
   const responseData = await getReponseData(url);
@@ -19,9 +20,8 @@ export const checkTravelData = async (url = getAjaxUrl()) => {
   if (!requiredData) return;
 
   const filteredData = await filterSavedData(requiredData);
-  if (!filteredData) return;
 
-  const messageDataArray = getMessageDataArray(requiredData);
+  const messageDataArray = getMessageDataArray(filteredData);
 
   await sendTelegramMessage(messageDataArray);
 };
@@ -34,8 +34,8 @@ export const checkTravelDataSeparately = async () => {
 
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
-    
-    debug_console('Start check travel [' + url + ']');
+
+    debug_console('Start check travel "' + url + '"');
 
     await checkTravelData(url);
 
@@ -45,9 +45,3 @@ export const checkTravelDataSeparately = async () => {
     await sleep(3000);
   }
 };
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}

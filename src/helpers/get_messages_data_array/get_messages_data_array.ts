@@ -1,11 +1,13 @@
-import { ResponseData } from '../../typings';
+import { ResponseRow } from '../../typings';
 
 /**
  * На вход принимает массив travel-предложений
  * Возвращает массив с текстами сообщений для телеграма
  */
-export const getMessageDataArray = (requiredData: Partial<ResponseData>) => {
-  return requiredData.rows.map((requiredItem) => {
+export const getMessageDataArray = (filteredData: Partial<ResponseRow>[]) => {
+  if (!filteredData || !filteredData.length) return;
+
+  return filteredData.map((filteredItem) => {
     const {
       country,
       date,
@@ -15,7 +17,7 @@ export const getMessageDataArray = (requiredData: Partial<ResponseData>) => {
       link,
       updated,
       countryCode,
-    } = requiredItem;
+    } = filteredItem;
 
     const NEW_LINE = '\n';
 

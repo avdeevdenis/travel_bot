@@ -212,7 +212,7 @@ export const ajaxUrlParams: Partial<AjaxOptions>[] = [{
   kHot: DEFAULT_KHOT,
 }, {
   countries: ['AE'],
-  kHot: DEFAULT_KHOT,
+  kHot: 70,
 }, {
   countries: ['SC'],
   kHot: 20,

@@ -3,8 +3,8 @@ import { checkTravelDataSeparately } from '../';
 const cron = require('node-cron');
 
 /**
- * Every 5 minutes
+ * Every 10 minutes
  */
-cron.schedule('*/5 * * * *', async () => {
+cron.schedule('*/10 * * * *', async () => {
   await checkTravelDataSeparately();
 });
