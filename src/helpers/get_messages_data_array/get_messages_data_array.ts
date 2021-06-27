@@ -1,5 +1,7 @@
 import { ResponseRow } from '../../typings';
 
+const { DateTime } = require('luxon');
+
 /**
  * На вход принимает массив travel-предложений
  * Возвращает массив с текстами сообщений для телеграма
@@ -55,7 +57,6 @@ export const getMessageDataArray = (filteredData: Partial<ResponseRow>[]) => {
   });
 };
 
-const { DateTime } = require('luxon');
 
 const getFlagIconByCountryName = (countryCode) => {
   switch (countryCode) {

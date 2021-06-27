@@ -1,7 +1,10 @@
 import * as fs from 'fs';
+import { getTurscannerLogPath } from '../../scripts/turscanner';
 
 import { ResponseData, ResponseRow } from '../../typings';
 import { createFileIfNotExists } from '../create_file_is_not_exits/create_file_is_not_exits';
+import { debug_log } from '../debug_log';
+import { getFileJSONContent } from '../get_file_json_content';
 
 const { DateTime } = require('luxon');
 
@@ -17,25 +20,13 @@ const getLink = (linkPath) => {
 export const filterSavedData = async (requiredData: ResponseData) => {
   await createFileIfNotExists(SAVED_ITEMS_FILE_PATH);
 
-  let fileContent;
+  const fileContentJSON = await getFileJSONContent(SAVED_ITEMS_FILE_PATH, async (error) => {
+    await debug_log(getTurscannerLogPath(), '[turscanner_script] filterSavedData getFileJSONContent' + error.message, {
+      isError: true
+    });
+  });
 
-  try {
-    fileContent = await fs.readFileSync(SAVED_ITEMS_FILE_PATH, { encoding: 'utf8' });
-  } catch (error) {
-    console.log('Error to read file', error.message);
-  }
-
-  let fileContentJSON;
-
-  if (!fileContent.length) {
-    fileContentJSON = {};
-  } else {
-    try {
-      fileContentJSON = JSON.parse(fileContent);
-    } catch (error) {
-      console.log('Error to parse JSON', error.message);
-    }
-  }
+  if (!fileContentJSON) return;
 
   let code = '';
 
@@ -76,7 +67,7 @@ export const filterSavedData = async (requiredData: ResponseData) => {
   if (newDataRows.length) {
     const savedData = newDataRows.map(({ link, date, khot, nights, price }) => {
       const saved = DateTime.now().setZone('Europe/Moscow').toString();
-  
+
       return {
         khot,
         nights,
@@ -105,7 +96,7 @@ export const filterSavedData = async (requiredData: ResponseData) => {
 // export const uniqObject = (rows: ResponseRow[]) => {
 //   return rows.reduce((result, item) => {
 //     const itemPath = item.link + item.price + item.date + item.nights;
- 
+
 //     result[itemPath] = result[itemPath] ? result[itemPath] + 1 : 1;
 
 //     return result;

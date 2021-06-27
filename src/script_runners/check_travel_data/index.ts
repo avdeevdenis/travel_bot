@@ -1,4 +1,4 @@
-import { checkTravelDataSeparately } from '../';
+import { checkTravelDataSeparately } from '../..';
 
 (async () => {
   await checkTravelDataSeparately();

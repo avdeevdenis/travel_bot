@@ -5,3 +5,12 @@ src/**/*.js
 src/data/*
 
 .env
+
+
+## turscanner
+
+# all tours data
+src/scripts/turscanner/data/tours_data.json
+
+# execution logs
+src/scripts/turscanner/logs/

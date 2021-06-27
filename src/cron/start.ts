@@ -1,4 +1,5 @@
 import { checkTravelDataSeparately } from '../';
+import { parseTurscanner } from '../scripts/turscanner';
 
 const cron = require('node-cron');
 
@@ -7,4 +8,6 @@ const cron = require('node-cron');
  */
 cron.schedule('*/10 * * * *', async () => {
   await checkTravelDataSeparately();
+
+  await parseTurscanner();
 });

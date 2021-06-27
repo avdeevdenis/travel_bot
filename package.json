@@ -5,16 +5,19 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "tsc --watch",
-    "travel:check": "NODE_ENV=dev node src/script_runners/index.js"
+    "travel:check": "NODE_ENV=dev node src/script_runners/check_travel_data/index.js",
+    "travel:turscanner": "NODE_ENV=dev node src/script_runners/turscanner/index.js"
   },
   "author": "Avdeev Denis",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
+    "form-data": "^4.0.0",
     "fs": "0.0.1-security",
     "luxon": "^1.27.0",
     "node-cron": "^3.0.0",
+    "node-html-parser": "^3.3.6",
     "node-telegram-bot-api": "^0.53.0",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.4"
