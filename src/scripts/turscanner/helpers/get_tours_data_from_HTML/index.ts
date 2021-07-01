@@ -1,11 +1,22 @@
 import { parse } from 'node-html-parser';
+import { getTurscannerLogPath } from '../..';
+import { debug_log } from '../../../../helpers/debug_log';
 import { ToursData, ToursDataItem } from './typings';
 
 /**
  * Считывает содержимое элемента внутри родетиля
  */
 const getTextInsideChildElement = (parentNode, childClass: string) => {
-  return parentNode.querySelector(childClass)?.text;
+  const child = parentNode.querySelector(childClass);
+  const text = child && child.text;
+
+  if (!text) {
+    debug_log(getTurscannerLogPath(), '[turscanner_script] getTextInsideChildElement no text childClass=' + childClass, {
+      isError: true
+    });
+  }
+
+  return text;
 };
 
 /**

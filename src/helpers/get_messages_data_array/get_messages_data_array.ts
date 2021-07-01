@@ -17,7 +17,7 @@ export const getMessageDataArray = (filteredData: Partial<ResponseRow>[]) => {
       price,
       khot,
       link,
-      updated,
+      // updated,
       countryCode,
     } = filteredItem;
 
@@ -27,7 +27,7 @@ export const getMessageDataArray = (filteredData: Partial<ResponseRow>[]) => {
     const flagString = flag ? ' ' + flag : '';
     const dateTo = getDateTo(date, nights);
     // const updatedTextI18N = getUpdatedTextI18N(updated);
-    const updatedDateTime = DateTime.now().setZone('Europe/Moscow').minus({ minutes: updated }).toFormat('HH:mm');
+    // const updatedDateTime = DateTime.now().setZone('Europe/Moscow').minus({ minutes: updated }).toFormat('HH:mm');
 
     const linkUrl = process.env.TRAVEL_SEARCHER_HOST + link;
 
@@ -41,16 +41,15 @@ export const getMessageDataArray = (filteredData: Partial<ResponseRow>[]) => {
     const monthHashtag = `#m${month}`;
     const dayHashtag = `#d${day}`;
 
-    const hashtags = `${countryCodeHashtag} ${nightsHashtag} ${priceHashtag} ${khotHashtag} ${dayHashtag} ${monthHashtag}`;
+    const hashtags = `#shtourval ${countryCodeHashtag} ${nightsHashtag} ${priceHashtag} ${khotHashtag} ${dayHashtag} ${monthHashtag}`;
 
     let messageString = '';
 
     messageString += `🆕 [${country}${flagString}](${linkUrl})${NEW_LINE}`;
     messageString += `Выгодность *${khot}%.*${NEW_LINE}`;
     messageString += `Стоимость *${price}*${NEW_LINE}`;
-    messageString += `Даты *${date} - ${dateTo}* → *${nights}* ночей.${NEW_LINE}${NEW_LINE}`;
+    messageString += `Даты *${date} - ${dateTo}* → *${nights}* ночей.${NEW_LINE}`;
     // messageString += `Обновлено ${updated} ${updatedTextI18N} назад.${NEW_LINE}`;
-    messageString += `Актуальность на ${updatedDateTime}.${NEW_LINE}`;
     messageString += `${hashtags}${NEW_LINE}`;
 
     return messageString;
