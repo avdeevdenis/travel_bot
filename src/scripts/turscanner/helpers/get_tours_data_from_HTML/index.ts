@@ -1,7 +1,7 @@
 import { parse } from 'node-html-parser';
 import { getTurscannerLogPath } from '../..';
 import { debug_log } from '../../../../helpers/debug_log';
-import { ToursData, ToursDataItem } from './typings';
+import { ToursData, ToursDataItem } from '../../typings';
 
 /**
  * Считывает содержимое элемента внутри родетиля

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsc --watch",
     "travel:check": "NODE_ENV=dev node src/script_runners/check_travel_data/index.js",
-    "travel:turscanner": "NODE_ENV=dev node src/script_runners/turscanner/index.js"
+    "travel:turscanner": "NODE_ENV=dev node src/script_runners/turscanner/index.js",
+    "travel:trip_to_dream": "NODE_ENV=dev node src/script_runners/trip_to_dream/index.js"
   },
   "author": "Avdeev Denis",
   "license": "ISC",

@@ -1,4 +1,4 @@
-import { ToursData, ToursDataItem } from '../get_tours_data_from_HTML/typings';
+import { ToursData, ToursDataItem } from '../../typings';
 
 /**
  * Формируем массив сообщений, с найденными турами для дальнейшей отправки

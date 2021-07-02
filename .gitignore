@@ -6,11 +6,6 @@ src/data/*
 
 .env
 
-
-## turscanner
-
-# all tours data
-src/scripts/turscanner/data/tours_data.json
-
-# execution logs
-src/scripts/turscanner/logs/
+# all tours data & execution logs
+src/scripts/*/logs/
+src/scripts/*/data/

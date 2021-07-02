@@ -1,39 +1,40 @@
 import { debug_log } from '../../helpers/debug_log';
 import { getToday } from '../../helpers/get_today';
 import { filterToursData } from './helpers/filter_tours_data';
-import { getHTMLTemplate } from './helpers/get_HTML_template';
+import { getAjaxData } from './helpers/get_ajax_data';
+import { getHTMLTemplateData } from './helpers/get_HTML_data';
 import { getTelegramMessagesData } from './helpers/get_telegram_messages_data';
-import { getToursDataFromHTML } from './helpers/get_tours_data_from_HTML';
-import { sendTelegramMessageWithTours } from './helpers/send_telegram_message_with_tours';
 import { saveFilteredToursDataToFile } from './helpers/save_filtered_tours_data_to_file';
+import { sendTelegramMessageWithTours } from './helpers/send_telegram_message_with_tours';
+
+export const PARTNER_URL = 'https://triptodream.ru/tag/na-more/';
 
 /**
  * Путь, по которому пишутся логи выполнения скрипта
  */
-export const getTurscannerLogPath = () => {
-  return './src/scripts/turscanner/logs/' + getToday() + '.txt';
+export const getTripToDreamLogPath = () => {
+  return './src/scripts/trip_to_dream/logs/' + getToday() + '.txt';
 };
 
 /**
  * Путь до файла с данными о турах
  */
-export const SAVED_DATA_FILE_PATH = './src/scripts/turscanner/data/tours_data.json';
+export const SAVED_DATA_FILE_PATH = './src/scripts/trip_to_dream/data/tours_data.json';
 
 /**
- * Обрабатываем результаты сайта 'https://www.turscanner.ru/'
+ * Обрабатываем результаты сайта 'https://triptodream.ru/'
  */
-export const parseTurscanner = async () => {
-  await debug_log(getTurscannerLogPath(), '[turscanner_script] Start.', {
+export const parseTripToDream = async () => {
+  await debug_log(getTripToDreamLogPath(), '[trip_to_dream_script] Start.', {
     isFirstLogMessage: true,
   });
 
   /**
-   * 1. Сначала получаем html-разметку с информацией о турах
+   * 1. Сначала получаем данные от партнера
    */
-  const HTMLTemplate = await getHTMLTemplate();
-
-  if (HTMLTemplate instanceof Error) {
-    await debug_log(getTurscannerLogPath(), '[turscanner_script] Error ' + HTMLTemplate.message, {
+  const ajaxData = await getAjaxData(PARTNER_URL);
+  if (!ajaxData) {
+    await debug_log(getTripToDreamLogPath(), '[trip_to_dream_script] getAjaxData error', {
       isError: true
     });
 
@@ -43,11 +44,13 @@ export const parseTurscanner = async () => {
   /**
    * 2. Затем парсим html-разметку и преобразуем ее в данные
    */
-  const toursData = getToursDataFromHTML(HTMLTemplate);
+  const toursData = getHTMLTemplateData(ajaxData);
+  if (!toursData) {
+  await debug_log(getTripToDreamLogPath(), '[trip_to_dream_script] getHTMLTemplateData nothing found', {
+    isError: true
+  });
 
-  if (!toursData.length) {
-    await debug_log(getTurscannerLogPath(), '[turscanner_script] getToursDataFromHTML nothing found.');
-    return;
+  return;
   }
 
   /**
@@ -55,8 +58,9 @@ export const parseTurscanner = async () => {
    */
   const filteredToursData = await filterToursData(toursData);
 
-  if (!filteredToursData.length) {
-    await debug_log(getTurscannerLogPath(), '[turscanner_script] filterToursData nothing left.');
+  if (!filteredToursData || !filteredToursData.length) {
+    await debug_log(getTripToDreamLogPath(), '[trip_to_dream_script] filterToursData nothing left.');
+
     return;
   }
 
@@ -75,5 +79,7 @@ export const parseTurscanner = async () => {
    */
   await sendTelegramMessageWithTours(telegramMessagesData);
 
-  await debug_log(getTurscannerLogPath(), '[turscanner_script] End.');
+  await debug_log(getTripToDreamLogPath(), '[trip_to_dream_script] End.');
 };
+
+parseTripToDream();

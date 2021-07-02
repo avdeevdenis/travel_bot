@@ -1,4 +1,4 @@
-import { ToursData } from '../get_tours_data_from_HTML/typings';
+import { ToursData } from '../../typings';
 
 import * as fs from 'fs';
 import { getTurscannerLogPath, SAVED_DATA_FILE_PATH } from '../..';
