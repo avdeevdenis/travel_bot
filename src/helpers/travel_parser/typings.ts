@@ -11,12 +11,14 @@ export type TravelInputUrl = string;
 export type TravelSavedToursFilepath = (
   TravelSavedToursFilepath_Turscanner |
   TravelSavedToursFilepath_Shtourval |
-  TravelSavedToursFilepath_TripToDream
+  TravelSavedToursFilepath_TripToDream |
+  TravelSavedToursFilepath_PiratesTravel
 );
 
 export type TravelSavedToursFilepath_Turscanner = 'src/data/turscanner_data.json';
 export type TravelSavedToursFilepath_Shtourval = 'src/data/shtourval_data.json';
 export type TravelSavedToursFilepath_TripToDream = 'src/data/trip_to_dream_data.json';
+export type TravelSavedToursFilepath_PiratesTravel = 'src/data/pirates_travel.json';
 
 /**
  * Тип содержимого файла, где хранится информация о турах
@@ -41,12 +43,14 @@ export type ProcessingTelegramMessage = (travelDataItem: StructuredTravelDataIte
 export type TravelFilterItemFields = (
   TravelFilterItemFields_Turscanner |
   TravelFilterItemFields_Shtourval |
-  TravelFilterItemFields_TripToDream
+  TravelFilterItemFields_TripToDream |
+  TravelFilterItemFields_PiratesTravel
 );
 
 export type TravelFilterItemFields_Turscanner = ['nights', 'price', 'country', 'meal', 'source', 'linkUrl', 'date'];
 export type TravelFilterItemFields_Shtourval = ['city', 'country', 'date', 'nights', 'price', 'link'];
 export type TravelFilterItemFields_TripToDream = ['title', 'text', 'url', 'date'];
+export type TravelFilterItemFields_PiratesTravel = ['dateFrom', 'dateTo', 'monthFrom', 'monthTo', 'price', 'title', 'subtitle'];
 
 export type TelegramMessage = string;
 export type TelegramMessages = TelegramMessage[];
@@ -54,7 +58,7 @@ export type TelegramMessages = TelegramMessage[];
 /**
  * Название партнера (для логов)
  */
-export type TravelPartnerName = 'turscanner' | 'shtourval' | 'trip_to_dream';
+export type TravelPartnerName = 'turscanner' | 'shtourval' | 'trip_to_dream' | 'pirates_travel';
 
 export type TravelInput = {
   /**
@@ -96,12 +100,19 @@ export type TravelInput = {
 /**
  * Данные, которые вернулись от партнеров
  */
-export type TravelAjaxResponseData = TravelAjaxReponseData_Turscanner | TravelAjaxReponseData_Shtourval | TravelAjaxReponseData_TripToDream;
+export type TravelAjaxResponseData = (
+  TravelAjaxReponseData_Turscanner |
+  TravelAjaxReponseData_Shtourval |
+  TravelAjaxReponseData_TripToDream |
+  TravelAjaxReponseData_PiratesTravel
+);
+
+export type TravelAjaxReponseData_Turscanner = string;
+export type TravelAjaxReponseData_TripToDream = string;
+export type TravelAjaxReponseData_PiratesTravel = string;
 export type TravelAjaxReponseData_Shtourval = {
   rows: StructuredTravelDataItem_Shtourval[];
 };
-export type TravelAjaxReponseData_Turscanner = string;
-export type TravelAjaxReponseData_TripToDream = string;
 
 /**
  * Структурированные данные, преобразованные из AJAX ответа
@@ -111,7 +122,13 @@ export type StructuredTravelData = StructuredTravelDataItem[];
 /**
  * Структурированный объект с информацией об одном конкретном туре
  */
-export type StructuredTravelDataItem = StructuredTravelDataItem_Turscanner | StructuredTravelDataItem_Shtourval | StructuredTravelDataItem_TripToDream;
+export type StructuredTravelDataItem = (
+  StructuredTravelDataItem_Turscanner |
+  StructuredTravelDataItem_Shtourval |
+  StructuredTravelDataItem_TripToDream |
+  StructuredTravelDataItem_PiratesTravel
+);
+
 export type StructuredTravelDataItem_Shtourval = {
   city: string;
   country: string;
@@ -141,4 +158,15 @@ export type StructuredTravelDataItem_TripToDream = {
   text: string;
   url: string;
   date: string;
+};
+
+export type StructuredTravelDataItem_PiratesTravel = {
+  dateFrom: string;
+  monthFrom: string;
+  dateTo: string;
+  monthTo: string;
+  title: string;
+  subtitle: string;
+  price: string;
+  url: string;
 };
