@@ -1,15 +1,13 @@
-### Локальная разработка
+### Локальная разработка & запуск скриптов локально
 
-`npm run dev`
-
-### Запуск скрипта локально
-
-`npm run travel:check`
+`npm run travel:shtourval`
+`npm run travel:turscanner`
+`npm run travel:trip_to_dream`
 
 ### Запуск cron
 
-`forever start src/cron/start.js`
+`npm run cron:start`
 
 ### Остановка cron:
 
-`forever stop src/cron/start.js`
+`npm run cron:stop`

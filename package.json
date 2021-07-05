@@ -2,12 +2,13 @@
   "name": "travel_bot",
   "version": "1.0.0",
   "homepage": "https://github.com/avdeevdenis/travel_bot",
-  "main": "src/index.js",
   "scripts": {
-    "dev": "tsc --watch",
-    "travel:check": "NODE_ENV=dev node src/script_runners/check_travel_data/index.js",
-    "travel:turscanner": "NODE_ENV=dev node src/script_runners/turscanner/index.js",
-    "travel:trip_to_dream": "NODE_ENV=dev node src/script_runners/trip_to_dream/index.js"
+    "travel:all": "npm run travel:shtourval && npm run travel:turscanner && npm run travel:trip_to_dream",
+    "travel:shtourval": "NODE_ENV=dev ts-node src/script_runners/shtourval/index.ts",
+    "travel:turscanner": "NODE_ENV=dev ts-node src/script_runners/turscanner/index.ts",
+    "travel:trip_to_dream": "NODE_ENV=dev ts-node src/script_runners/trip_to_dream/index.ts",
+    "cron:start": "forever start -v -c ts-node ./src/cron/index.ts",
+    "cron:stop": "forever stop -v -c ts-node ./src/cron/index.ts"
   },
   "author": "Avdeev Denis",
   "license": "ISC",

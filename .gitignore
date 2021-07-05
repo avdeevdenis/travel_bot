@@ -1,11 +1,7 @@
 node_modules/
 
-src/**/*.js
-
-src/data/*
-
 .env
 
 # all tours data & execution logs
-src/scripts/*/logs/
-src/scripts/*/data/
+src/logs/*
+src/data/*

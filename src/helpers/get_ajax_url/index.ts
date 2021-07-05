@@ -1,7 +1,5 @@
 const { DateTime } = require('luxon');
 
-const HOST = process.env.DEFAULT_HOST;
-
 const DEFAULT_ACTION = 'getTours';
 const DEFAULT_CITIES = 'Moscow';
 /**
@@ -18,6 +16,8 @@ const HOTTEST_DEFAULT = false;
 // const DATE_TO_DEFAULT = process.env.DATE_TO_DEFAULT;
 const SORT_DEFAULT = 'khot';
 const SORT_DIR_DEFAULT = 0;
+
+const HOST = 'https://shtourval.ru/scanner.php';
 
 export type AjaxOptions = {
   /**
@@ -212,7 +212,7 @@ export const ajaxUrlParams: Partial<AjaxOptions>[] = [{
   kHot: DEFAULT_KHOT,
 }, {
   countries: ['AE'],
-  kHot: 60,
+  kHot: 50,
   dateFrom: '01.10.2021',
   dateTo: '31.12.2021',
 }, {

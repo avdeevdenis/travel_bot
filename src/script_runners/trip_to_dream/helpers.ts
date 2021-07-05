@@ -1,4 +1,16 @@
+import { StructuredTravelDataItem_TripToDream, TravelAjaxReponseData_TripToDream, TravelInput } from '../../helpers/travel_parser/typings';
 import { parse } from 'node-html-parser';
+
+export const getTravelInput: () => TravelInput = () => {
+  return {
+    url: 'https://triptodream.ru/tag/na-more/',
+    partnerName: 'trip_to_dream',
+    processingAjaxResponseData: getToursDataFromHTML,
+    savedToursFilepath: 'src/data/trip_to_dream_data.json',
+    filterTravelItemFields: ['title', 'text', 'url', 'date'],
+    processingTelegramMessage: getTelegramMessageItem,
+  };
+};
 
 /**
  * Классы, используемые в текущем модуле для парсинга
@@ -10,11 +22,8 @@ const classes = {
   DATE: 'span',
 } as const;
 
-/**
- * Парсит html-разметку и формирует необходимые данные
- */
-export const getHTMLTemplateData = (ajaxData) => {
-  const root = parse(ajaxData);
+export const getToursDataFromHTML = (ajaxResponseData: TravelAjaxReponseData_TripToDream) => {
+  const root = parse(ajaxResponseData);
 
   const articleItemNodes = root.querySelectorAll(classes.ITEM);
   if (!articleItemNodes.length) return null;
@@ -53,4 +62,27 @@ export const getHTMLTemplateData = (ajaxData) => {
   if (!toursData.length) return;
 
   return toursData;
+};
+
+const prepareTelegramMessageEntities = (message) => {
+  let prepared = message;
+
+  prepared = prepared.replace(/\*/g, '☆');
+
+  return prepared;
+};
+
+export const getTelegramMessageItem = (messageDataItem: StructuredTravelDataItem_TripToDream) => {
+  const NEW_LINE = '\n';
+  const { title, text, url, date } = messageDataItem;
+  const hashtags = `#trip\\_to\\_dream`;
+
+  let result = '';
+
+  result += `🌴 [${prepareTelegramMessageEntities(title)}](${url}) ${NEW_LINE}`;
+  result += `${prepareTelegramMessageEntities(text)} ${NEW_LINE}`;
+  result += `Дата *${date}*. ${NEW_LINE}`;
+  result += `${hashtags}`;
+
+  return result;
 };

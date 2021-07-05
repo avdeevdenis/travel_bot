@@ -3,13 +3,13 @@ import * as fs from 'fs';
 /**
  * Считывает содержимое файла, как JSON (либо возвращает пустой объект)
  */
-export const getFileJSONContent = async (filePath: string, errorCallback?: (Error) => void) => {
+export const getFileJSONContent = async (filePath: string, errorCallback?: (error: Error) => void) => {
   let fileContent;
 
   try {
     fileContent = await fs.readFileSync(filePath, { encoding: 'utf8' });
   } catch (error) {
-    await errorCallback(new Error('[getFileJSONContent] Error to read file' + error.message));
+    errorCallback && await errorCallback(new Error('[getFileJSONContent] Error to read file' + error.message));
 
     return false;
   }
@@ -22,7 +22,7 @@ export const getFileJSONContent = async (filePath: string, errorCallback?: (Erro
     try {
       fileContentJSON = JSON.parse(fileContent);
     } catch (error) {
-      await errorCallback(new Error('[getFileJSONContent] Error to parse json' + error.message));
+      errorCallback && await errorCallback(new Error('[getFileJSONContent] Error to parse json' + error.message));
 
       return false;
     }
