@@ -77,11 +77,6 @@ export type TravelInput = {
   processingAjaxResponseData: ProcessingAjaxResponseData;
 
   /**
-   * Путь, по которому будет записываться информация о турах
-   */
-  savedToursFilepath: TravelSavedToursFilepath;
-
-  /**
    * Поля, по которым идет сравнение объекта с туром с объектом из файла на их идентичность, объекты считаются идентичными если значения всех перечисленных полей равны
    */
   filterTravelItemFields: TravelFilterItemFields;

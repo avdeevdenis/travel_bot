@@ -8,7 +8,6 @@ export const getTravelInput: () => TravelInput = () => {
     urlOptions: getUrlOptions(),
     partnerName: 'turscanner',
     processingAjaxResponseData: getToursDataFromHTML,
-    savedToursFilepath: 'src/data/turscanner_data.json',
     filterTravelItemFields: ['nights', 'price', 'country', 'meal', 'source', 'linkUrl', 'date'],
     processingTelegramMessage: getTelegramMessageItem,
   };

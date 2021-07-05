@@ -41,7 +41,6 @@ export const travelParser = async (inputData: TravelInput) => {
     urlOptions,
     partnerName,
     processingAjaxResponseData,
-    savedToursFilepath,
     filterTravelItemFields,
     processingTelegramMessage,
   } = inputData;
@@ -65,6 +64,8 @@ export const travelParser = async (inputData: TravelInput) => {
     await debug_log(LOG_PATH, LOG_PREFIX + 'End. nothing left after processing.');
     return;
   }
+
+  const savedToursFilepath = './src/raw_data/' + partnerName + '.json' as TravelSavedToursFilepath;
 
   /**
    * Шаг 3️⃣. Фильтруем полученные данные (исключаем уже имеющиеся), для этого

@@ -37,7 +37,6 @@ export const getTravelInput: (url: string) => TravelInput = (url) => {
     },
     partnerName: 'shtourval',
     processingAjaxResponseData,
-    savedToursFilepath: 'src/data/shtourval_data.json',
     filterTravelItemFields: ['city', 'country', 'date', 'nights', 'price', 'link'],
     processingTelegramMessage: getTelegramMessageItem,
   };

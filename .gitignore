@@ -4,4 +4,4 @@ node_modules/
 
 # all tours data & execution logs
 src/logs/*
-src/data/*
+src/raw_data/*

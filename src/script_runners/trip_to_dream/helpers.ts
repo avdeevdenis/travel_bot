@@ -6,7 +6,6 @@ export const getTravelInput: () => TravelInput = () => {
     url: 'https://triptodream.ru/tag/na-more/',
     partnerName: 'trip_to_dream',
     processingAjaxResponseData: getToursDataFromHTML,
-    savedToursFilepath: 'src/data/trip_to_dream_data.json',
     filterTravelItemFields: ['title', 'text', 'url', 'date'],
     processingTelegramMessage: getTelegramMessageItem,
   };
@@ -75,7 +74,7 @@ const prepareTelegramMessageEntities = (message) => {
 export const getTelegramMessageItem = (messageDataItem: StructuredTravelDataItem_TripToDream) => {
   const NEW_LINE = '\n';
   const { title, text, url, date } = messageDataItem;
-  const hashtags = `#trip\\_to\\_dream`;
+  const hashtags = `#trip_to_dream`;
 
   let result = '';
 

@@ -6,7 +6,6 @@ export const getTravelInput: () => TravelInput = () => {
     url: 'https://turs.sale/',
     partnerName: 'pirates_travel',
     processingAjaxResponseData: getToursDataFromHTML,
-    savedToursFilepath: 'src/data/pirates_travel.json',
     filterTravelItemFields: ['dateFrom', 'dateTo', 'monthFrom', 'monthTo', 'price', 'title', 'subtitle'],
     processingTelegramMessage: getTelegramMessageItem,
   };
