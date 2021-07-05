@@ -213,11 +213,26 @@ export const saveFilteredTravelDataToFile = async (filteredTravelData: Structure
 };
 
 /**
+ * Убираем из сообщения символы, которые телеграм не переваривает
+ */
+export const escapeMessage = (messageText: string) => {
+  let escapedMessage = messageText;
+
+  escapedMessage = escapedMessage.replace(/_/g, '\\_');
+
+  return escapedMessage;
+};
+
+/**
  * Шаг 5️⃣. Формируем массив сообщений, с найденными турами для дальнейшей отправки
  */
 export const getTelegramMessagesData = (filteredTravelData: StructuredTravelData, processingTelegramMessage: ProcessingTelegramMessage) => {
   return filteredTravelData.map(filteredTravelDataItem => {
-    return processingTelegramMessage(filteredTravelDataItem);
+    const processedMessage = processingTelegramMessage(filteredTravelDataItem);
+
+    const escapedMessage = escapeMessage(processedMessage);
+
+    return escapedMessage;
   })
 };
 
@@ -232,27 +247,39 @@ export const sendTelegramMessagesWithTours = async (messagesData: TelegramMessag
 
     await debug_log(LOG_PATH, LOG_PREFIX + `Send telegram message ${i + 1} of ${l}.`);
 
-    /**
-     * API https://core.telegram.org/bots/api#sendmessage
-     */
-    await AvdeevTravelBot.sendMessage(chatId, messageText, {
+    try {
       /**
-       * Включаем markdown-разметку
+       * API https://core.telegram.org/bots/api#sendmessage
        */
-      parse_mode: 'Markdown',
+      await AvdeevTravelBot.sendMessage(chatId, messageText, {
+        /**
+         * Включаем markdown-разметку
+         */
+        parse_mode: 'Markdown',
 
-      /** 
-       * Отключаем превью ссылок
-       */
-      disable_web_page_preview: true,
+        /** 
+         * Отключаем превью ссылок
+         */
+        disable_web_page_preview: true,
 
-      /**
-       * Делаем сообщения бесшумными
-       */
-      disable_notification: true,
-    });
+        /**
+         * Делаем сообщения бесшумными
+         */
+        disable_notification: true,
+      });
 
-    await debug_log(LOG_PATH, LOG_PREFIX + `Sended telegram message ${i + 1} of ${l}.`);
+      await debug_log(LOG_PATH, LOG_PREFIX + `Sended telegram message ${i + 1} of ${l}.`, {
+        data: messageText
+      });
+    } catch (error) {
+      await debug_log(LOG_PATH, LOG_PREFIX + `Error to send telegram message ${i + 1} of ${l}.`, {
+        isError: true,
+        data: {
+          errorText: error.message,
+          messageText,
+        }
+      });
+    }
 
     /**
      * Не хотим отправлять много сообщений в секунду
