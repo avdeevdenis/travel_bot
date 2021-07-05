@@ -6,6 +6,7 @@ import { TravelInput } from '../helpers/travel_parser/typings';
 import { parseShtourval } from '../script_runners/shtourval/helpers';
 import { getTravelInput as getTravelInputTripToDream } from '../script_runners/trip_to_dream/helpers';
 import { getTravelInput as getTravelInputTurscanner } from '../script_runners/turscanner/helpers';
+import { getTravelInput as getTravelInputPiratesTravel } from '../script_runners/pirates_travel/helpers';
 
 const cron = require('node-cron');
 
@@ -25,6 +26,12 @@ cron.schedule('*/10 * * * *', async () => {
    */
   const travelInput_Turscanner: TravelInput = getTravelInputTurscanner();
   await travelParser(travelInput_Turscanner);
+
+  /**
+   * Parse partner 'pirate_travel'
+   */
+   const travelInput_PiratesTravel: TravelInput = getTravelInputPiratesTravel();
+   await travelParser(travelInput_PiratesTravel);
 
   /**
    * Parse partner 'shtourval'
