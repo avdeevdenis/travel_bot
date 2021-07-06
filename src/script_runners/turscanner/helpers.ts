@@ -64,6 +64,20 @@ const classes = {
 } as const;
 
 /**
+ * Преобразуем урл для случаев:
+ * - если есть параметр `&custom_url=` берем его значение
+ */
+const prepareUrl = (url: string) => {
+  const preparedUrl = new URL(url);
+
+  const customUrl = preparedUrl.searchParams.get('custom_url');
+
+  if (customUrl) return customUrl;
+
+  return url;
+};
+
+/**
  * Парсит html-разметку и формирует необходимые данные
  */
 export const getToursDataFromHTML: ProcessingAjaxResponseData = (HTMLTemplate) => {
@@ -85,7 +99,8 @@ export const getToursDataFromHTML: ProcessingAjaxResponseData = (HTMLTemplate) =
       const source = getTextInsideChildElement(tourItemNode, classes.SOURCE);
 
       const link = tourItemNode.querySelector(classes.LINK);
-      const linkUrl = link ? decodeURIComponent(link.getAttribute('href')) : null;
+      const linkUrlDecoded = link ? decodeURIComponent(link.getAttribute('href')) : null;
+      const linkUrl = linkUrlDecoded ? prepareUrl(linkUrlDecoded) : null;
 
       return {
         country,

@@ -65,7 +65,7 @@ export const travelParser = async (inputData: TravelInput) => {
     return;
   }
 
-  const savedToursFilepath = './src/raw_data/' + partnerName + '.json' as TravelSavedToursFilepath;
+  const savedToursFilepath = './src/raw_data/' + partnerName + '_data.json' as TravelSavedToursFilepath;
 
   /**
    * Шаг 3️⃣. Фильтруем полученные данные (исключаем уже имеющиеся), для этого
